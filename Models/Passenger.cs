@@ -13,8 +13,6 @@ namespace Project.Net.Models
         [StringLength(7)]
         public string PassportNumber { get; set; }
 
-        [RegularExpression("^[0 - 9]{8}$")]
-        public string TelNumber { get; set; }
 
     }
 }
