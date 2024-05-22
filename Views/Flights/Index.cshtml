@@ -4,74 +4,45 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 class="text-center my-4">Flights</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Pilot)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Airline)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Destination)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Departure)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FlightDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EffectiveArrival)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EstimatedDuration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MyPlane)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pilot)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Airline)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Destination)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Departure)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FlightDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EffectiveArrival)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EstimatedDuration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MyPlane.PlaneId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.FlightId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.FlightId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.FlightId">Delete</a>
-            </td>
-        </tr>
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-success" asp-action="Create">Create New Flight</a>
+</div>
+
+<div class="row">
+    @if (!Model.Any())
+    {
+        <h3 class="text-center text-muted">There are no flights available</h3>
+    }else{
+    @foreach (var item in Model)
+    {
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Flight @item.FlightId</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@item.Airline</h6>
+                    <p class="card-text"><strong>Destination:</strong> @item.Destination</p>
+                    <p class="card-text"><strong>Departure:</strong> @item.Departure</p>
+                    <p class="card-text"><strong>Flight Date:</strong> @item.FlightDate.ToString("d")</p>
+                    <p class="card-text"><strong>Effective Arrival:</strong> @item.EffectiveArrival.ToString("d")</p>
+                    <p class="card-text"><strong>Estimated Duration:</strong> @item.EstimatedDuration</p>
+                    <p class="card-text"><strong>Plane ID:</strong> @item.MyPlane.PlaneId</p>
+                    <div class="btn-group" role="group">
+                        <a class="btn btn-primary mx-2" asp-action="Edit" asp-route-id="@item.FlightId">Edit</a>
+                        <a class="btn btn-info mx-2" asp-action="Details" asp-route-id="@item.FlightId">Details</a>
+                        <a class="btn btn-danger mx-2" asp-action="Delete" asp-route-id="@item.FlightId">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    }
+    
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
-    </tbody>
-</table>
