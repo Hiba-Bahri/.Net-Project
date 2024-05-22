@@ -4,44 +4,42 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 class="text-center my-4">Planes</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Capacity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ManufactureDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PlaneType)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Capacity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ManufactureDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PlaneType)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.PlaneId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PlaneId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PlaneId">Delete</a>
-            </td>
-        </tr>
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-success" asp-action="Create">Create New Plane</a>
+</div>
+
+<div class="row">
+    @if (!Model.Any())
+    {
+        <h3 class="text-center text-muted">There are no planes available</h3>
+    }
+    else
+    {
+        @foreach (var item in Model)
+        {
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Plane @item.PlaneId</h5>
+                        <p class="card-text"><strong>Capacity:</strong> @item.Capacity</p>
+                        <p class="card-text"><strong>Manufacture Date:</strong> @item.ManufactureDate.ToString("d")</p>
+                        <p class="card-text"><strong>Plane Type:</strong> @item.PlaneType</p>
+                        <div class="btn-group" role="group">
+                            <a class="btn btn-primary mx-2" asp-action="Edit" asp-route-id="@item.PlaneId">Edit</a>
+                            <a class="btn btn-info mx-2" asp-action="Details" asp-route-id="@item.PlaneId">Details</a>
+                            <a class="btn btn-danger mx-2" asp-action="Delete" asp-route-id="@item.PlaneId">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
-    </tbody>
-</table>
