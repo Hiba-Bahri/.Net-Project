@@ -107,9 +107,16 @@ namespace Project.Net.Areas.Identity.Pages.Account
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+    {
+        returnUrl ??= Url.Content("~/");
+        ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+        
+        if (Input.Email == "admin@admin.com")
         {
-            returnUrl ??= Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ModelState.AddModelError(string.Empty, "You are not allowed to register with these credentials");
+            return Page();
+        }
+
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
@@ -150,7 +157,6 @@ namespace Project.Net.Areas.Identity.Pages.Account
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return Page();
         }
 
