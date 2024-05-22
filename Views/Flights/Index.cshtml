@@ -1,15 +1,20 @@
-﻿@model IEnumerable<Project.Net.Models.Flight>
-
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<Project.Net.Models.Flight>
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1 class="text-center my-4">Flights</h1>
-
-<div class="d-flex justify-content-end mb-3">
-    <a class="btn btn-success" asp-action="Create">Create New Flight</a>
-</div>
-
+@if (SignInManager.IsSignedIn(User))
+{
+    if(User.Identity?.Name == "admin@admin.com"){
+    <div class="d-flex justify-content-end mb-3">
+        <a class="btn btn-success" asp-action="Create">Create New Flight</a>
+    </div>
+    }
+}
 <div class="row">
     @if (!Model.Any())
     {
@@ -29,9 +34,22 @@
                     <p class="card-text"><strong>Estimated Duration:</strong> @item.EstimatedDuration</p>
                     <p class="card-text"><strong>Plane ID:</strong> @item.MyPlane.PlaneId</p>
                     <div class="btn-group" role="group">
-                        <a class="btn btn-primary mx-2" asp-action="Edit" asp-route-id="@item.FlightId">Edit</a>
-                        <a class="btn btn-info mx-2" asp-action="Details" asp-route-id="@item.FlightId">Details</a>
-                        <a class="btn btn-danger mx-2" asp-action="Delete" asp-route-id="@item.FlightId">Delete</a>
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                @if (User.Identity?.Name == "admin@admin.com")
+                                {
+                                    <a class="btn btn-primary mx-2" asp-action="Edit" asp-route-id="@item.FlightId">Edit</a>
+                                }
+
+                            }
+                            <a class="btn btn-info mx-2" asp-action="Details" asp-route-id="@item.FlightId">Details</a>
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                @if (User.Identity?.Name == "admin@admin.com")
+                                {
+                                    <a class="btn btn-danger mx-2" asp-action="Delete" asp-route-id="@item.FlightId">Delete</a>
+                                }
+                            }
                     </div>
                 </div>
             </div>

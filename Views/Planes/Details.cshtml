@@ -1,4 +1,7 @@
-﻿@model Project.Net.Models.Plane
+﻿@using Microsoft.AspNetCore.Identity
+@model Project.Net.Models.Plane
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 @{
     ViewData["Title"] = "Details";
@@ -22,7 +25,12 @@
                 </dl>
             </div>
             <div class="card-footer text-right">
+                @if (SignInManager.IsSignedIn(User))
+                  {
+                    @if(User.Identity?.Name == "admin@admin.com"){
                 <a href="@Url.Action("Edit", new { id = Model?.PlaneId })" class="btn btn-primary mr-2">Edit</a>
+                }
+                }
                 <a href="@Url.Action("Index")" class="btn btn-secondary">Back to List</a>
             </div>
         </div>
